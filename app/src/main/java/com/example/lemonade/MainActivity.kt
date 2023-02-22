@@ -51,8 +51,9 @@ fun LemonadeApp() {
 
 @Composable
 fun LemonadeImageAndText(modifier: Modifier = Modifier) {
-    var result by remember { mutableStateOf(1) }
-    val lemonadeData = LemonadeData(result)
+    var buttonCounter by remember { mutableStateOf(1) }
+    var squeezeCounter by remember { mutableStateOf(1) }
+    val lemonadeData = LemonadeData(buttonCounter)
     val lemonadeText = lemonadeData.lemonadeText
     val lemonadeImage = lemonadeData.lemonadeImage
     val contentDescription = lemonadeData.contentDescription
@@ -65,8 +66,25 @@ fun LemonadeImageAndText(modifier: Modifier = Modifier) {
         Text(text = stringResource(id = lemonadeText))
         Button(
             onClick = {
-                result = if (result < 4) result + 1 else 1
-                Log.d("TAG", "Button pressed.  Number is $result")
+                //(buttonCounter < 4) buttonCounter + 1 else 1
+                buttonCounter = when(buttonCounter){
+                    1 -> {
+                        squeezeCounter = (2..4).random()
+                        buttonCounter + 1
+                    }
+                    2 -> {
+                        squeezeCounter--
+                        if(squeezeCounter == 0){
+                            buttonCounter + 1
+                        } else {
+                            2
+                        }
+                    }
+                    3 -> buttonCounter + 1
+                    else -> 1
+                }
+
+                Log.d("TAG", "Button pressed.  Number is $buttonCounter")
             },
         ) {
             Image(
